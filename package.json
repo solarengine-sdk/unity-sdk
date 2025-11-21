@@ -1,0 +1,15 @@
+{
+  "name": "com.solarengine.sdk",
+  "version": "1.3.2",
+  "displayName": "SolarEngineSDK",
+  "description": "SolarEngine SDK for Unity",
+  "unity": "2019.4",
+  "author": {
+    "name": "SolarEngine"
+  },
+
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+    
+  }
+}
