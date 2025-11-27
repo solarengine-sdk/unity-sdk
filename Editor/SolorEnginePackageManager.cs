@@ -115,51 +115,6 @@ public class SolorEnginePackageManager : MonoBehaviour
 
 }
 
-[InitializeOnLoad]
-public static class SDKInstallChecker
-{
-    private const string PackageName = "com.solarengine.sdk";
-    private const string SESDKUPMImportedKey = "SESDKUPMImported";
-
-    private static bool _checked;
-
-    static SDKInstallChecker()
-    {
-        if (_checked) return;
-        _checked = true;
-
-        if (!EditorPrefs.GetBool(SESDKUPMImportedKey, false))
-        {
-            if (PackageChecker.IsUPMPackageInstalled())
-            {
-                ImportConfig();
-                EditorPrefs.SetBool(SESDKUPMImportedKey, true);
-            }
-         
-         
-            
-        }
-    }
-    [MenuItem("SolarEngineSDK/import configuration module")]
-    public static void ImportConfig()
-    {
-        ImportPackage("solarengine-unity-sdk-upm.unitypackage");
-    }
-    private static void ImportPackage(string fileName)
-    {
-        string packagePath = $"Packages/{PackageName}/~PackagesContent/{fileName}";
-
-        if (!File.Exists(packagePath))
-        {
-            Debug.LogError($"File {fileName}not found. The current SDK may not be imported by UPM.");
-            return;
-        }
-
-        AssetDatabase.ImportPackage(packagePath, true);
-        Debug.Log($"The  package {fileName} has been imported");
-    }
-}
-
 #if UNITY_EDITOR
 
 

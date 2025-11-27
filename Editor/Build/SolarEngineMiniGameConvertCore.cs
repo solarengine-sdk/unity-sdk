@@ -1,5 +1,8 @@
 using System;
 using System.IO;
+#if SOLARENGINE_KUAISHOU&&TUANJIE_2022_3_OR_NEWER
+using KSWASM.editor;
+#endif
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
@@ -46,7 +49,67 @@ using WeChatWASM;
             }
         }
 #endif
+#if SOLARENGINE_KUAISHOU&&TUANJIE_2022_3_OR_NEWER
 
+        public class KSChatConvertCore : LifeCycleBase
+        {
+            
+            public override void beforeCopyDefault()
+            {
+                string _sourceJsPath = sourceJsPath;
+                if (PackageChecker.IsUPMPackageInstalled())
+                {
+                    _sourceJsPath=    Path.Combine(PackageChecker. GetPackagePath(), "Runtime/Plugins/MiniGame/SolarEngineJsHelper.js");
+
+                }
+                // 读取你的自定义模板目录并对其中的资源做动态修改
+                var tmp = BuildTemplateHelper.CustomTemplateDir;
+                if (!Directory.Exists(tmp))
+                {
+                    Debug.Log(
+                        $"{SolarEngineMiniGameConvertCoreLOG} WeChat Custom template directory does not exist! Create ");
+
+                    Directory.CreateDirectory(tmp);
+
+                }
+                string tmpPath = Path.Combine(tmp, "SolarEngineJsHelper.js");
+                if( File.Exists(tmpPath))
+                    File.Delete(tmpPath);
+                
+                File.Copy(_sourceJsPath, tmp);
+                Debug.Log($"{SolarEngineMiniGameConvertCoreLOG} SolarEngineHelper.js Copy successfully");
+                
+            }
+
+            // [MenuItem("SolarEngineSDK/MiniGame/Tuanjie/beforeCopyDefault")]
+
+            public override void afterBuildTemplate()
+            {
+                
+                Debug.Log($"{SolarEngineMiniGameConvertCoreLOG} WeChat afterBuildTemplate");
+                addJsCode();
+            }
+            
+
+            static void addJsCode()
+            {
+                // string jsCode = "import 'SolarEngineJsHelper.js';";
+                // string gamejsPath = Path.Combine(UnityUtil.GetEditorConf().ProjectConf.DST, "minigame", "game.js");
+                //
+                //
+                // File.AppendAllText(gamejsPath, jsCode);
+                //
+                //
+                // Debug.Log($"{SolarEngineMiniGameConvertCoreLOG} SolarEngineHelper Content inserted successfully");
+                //
+
+
+            }
+
+        
+
+        }
+#endif
         
 #if SOLARENGINE_WECHAT && TUANJIE_WEIXINMINIGAME
         public class WxChatConvertCore: LifeCycleBase
