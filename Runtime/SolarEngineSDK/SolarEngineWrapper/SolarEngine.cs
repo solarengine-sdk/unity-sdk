@@ -62,6 +62,7 @@ namespace SolarEngine
                     {
                         GameObject am = new GameObject("Analytics");
                         _instance = am.AddComponent(typeof(Analytics)) as Analytics;
+                        DontDestroyOnLoad(am);
                     }
                 }
 

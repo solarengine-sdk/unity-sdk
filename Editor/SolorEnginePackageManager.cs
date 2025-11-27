@@ -42,55 +42,81 @@ public class SolorEnginePackageManager : MonoBehaviour
     }
     
 
-    static void cleanupOpenHarmonyBridge()
-    {
-        const string CLEANUP_KEY = "SolarEngine_OpenHarmonyBridge_Cleaned";
 
-        
-        if (EditorPrefs.GetBool(CLEANUP_KEY, false))
+    private static void cleanupOpenHarmonyBridge()
+    {
+        // 已清理过？直接跳过
+        if (File.Exists(OpenHarmonyCleanupFlagPath))
         {
             Debug.LogWarning("[SolarEngine] cleanupOpenHarmonyBridge skipped (already cleaned).");
             return;
         }
+
         string root = Path.Combine(Application.dataPath, "Plugins/OpenHarmony/SolarEngine");
 
         string[] deleteTargets =
         {
-            "RemoteConfig/RCNativeBridge.etslib",
-            "RemoteConfig/SERCOpenHarmonyProxy.ets",
+            "RemoteConfig", // <-- 直接删除整个文件夹
+            "RemoteConfig.meta",     
             "SENativeBridge.etslib",
             "SEOpenHarmonyProxy.ets"
         };
 
         foreach (var target in deleteTargets)
         {
-            // 拼接完整路径
-            string fullPath = Path.Combine(root, target);
+            string fullPath = Path.Combine(root, target).Replace("\\", "/");
 
-            // 统一处理一下路径分隔符
-            fullPath = fullPath.Replace("\\", "/");
-
-            if (File.Exists(fullPath))
+            // 如果是目录，则删除目录
+            if (Directory.Exists(fullPath))
+            {
+                try
+                {
+                    Directory.Delete(fullPath, true);
+                    Debug.LogWarning($"[SolarEngine] 🗂️ Deleted folder: {fullPath}");
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError($"[SolarEngine] ❌ Failed to delete folder: {fullPath}\n{e}");
+                }
+            }
+            // 如果是文件，则删除文件
+            else if (File.Exists(fullPath))
             {
                 try
                 {
                     File.Delete(fullPath);
-                    Debug.LogWarning($"[SolarEngine] ✅ Deleted: {fullPath}");
+                    Debug.LogWarning($"[SolarEngine] 📄 Deleted file: {fullPath}");
                 }
                 catch (System.Exception e)
                 {
-                    Debug.LogError($"[SolarEngine] ❌ Failed delete: {fullPath}\n{e}");
+                    Debug.LogError($"[SolarEngine] ❌ Failed to delete file: {fullPath}\n{e}");
                 }
             }
             else
             {
-                Debug.LogWarning($"[SolarEngine] ⚠ Not Found: {fullPath}");
+                Debug.LogWarning($"[SolarEngine] ⚠ Not found: {fullPath}");
             }
         }
-        EditorPrefs.SetBool(CLEANUP_KEY, true);
+
+        // 创建清理标记
+        CreateOpenHarmonyCleanupFlag();
         AssetDatabase.Refresh();
     }
 
+    /// <summary>
+    /// 创建 OpenHarmony 清理标记文件
+    /// </summary>
+    private static void CreateOpenHarmonyCleanupFlag()
+    {
+        string folder = Path.GetDirectoryName(OpenHarmonyCleanupFlagPath);
+        if (!Directory.Exists(folder))
+            Directory.CreateDirectory(folder);
+
+        File.WriteAllText(OpenHarmonyCleanupFlagPath, System.DateTime.Now.ToString());
+    }
+
+   
+    private const string OpenHarmonyCleanupFlagPath = "Library/SolarEngine/SESDK_OpenHarmony_CLEANED.flag";
     
     [MenuItem("SolarEngineSDK/Documentation/UnityDocumentation", false, 0)]
     static void unityDocumentation()
@@ -113,51 +139,6 @@ public class SolorEnginePackageManager : MonoBehaviour
     private const string nostorageWarning = "You must choose either China or Overseas!";
   
 
-}
-
-[InitializeOnLoad]
-public static class SDKInstallChecker
-{
-    private const string PackageName = "com.solarengine.sdk";
-    private const string SESDKUPMImportedKey = "SESDKUPMImported";
-
-    private static bool _checked;
-
-    static SDKInstallChecker()
-    {
-        if (_checked) return;
-        _checked = true;
-
-        if (!EditorPrefs.GetBool(SESDKUPMImportedKey, false))
-        {
-            if (PackageChecker.IsUPMPackageInstalled())
-            {
-                ImportConfig();
-                EditorPrefs.SetBool(SESDKUPMImportedKey, true);
-            }
-         
-         
-            
-        }
-    }
-    [MenuItem("SolarEngineSDK/import configuration module")]
-    public static void ImportConfig()
-    {
-        ImportPackage("solarengine-unity-sdk-upm.unitypackage");
-    }
-    private static void ImportPackage(string fileName)
-    {
-        string packagePath = $"Packages/{PackageName}/~PackagesContent/{fileName}";
-
-        if (!File.Exists(packagePath))
-        {
-            Debug.LogError($"File {fileName}not found. The current SDK may not be imported by UPM.");
-            return;
-        }
-
-        AssetDatabase.ImportPackage(packagePath, true);
-        Debug.Log($"The  package {fileName} has been imported");
-    }
 }
 
 #if UNITY_EDITOR

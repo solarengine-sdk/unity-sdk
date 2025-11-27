@@ -7,7 +7,7 @@
   "author": {
     "name": "SolarEngine"
   },
-
+  "editorCode": true,
   "dependencies": {
     "com.unity.nuget.newtonsoft-json": "3.2.1"
     

@@ -620,6 +620,8 @@ namespace SolarEngine
                 {
                     overseaProperty.boolValue = false;
                     oldOverseaValue = overseaProperty.boolValue;
+                    if (chinaProperty.boolValue) useOaid.boolValue = true;
+                    
                 });
 
                 // 处理 Oversea 值变化

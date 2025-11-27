@@ -220,7 +220,8 @@ namespace SolarEngine
 
             
             
-            
+            if(SolarEngineSettings.isCN)
+                SolarEngineSettings.isUseOaid=true;
             if (!SolarEngineSettings.isUseOaid)
                 oaid = PluginsEdtior.disableOaid();
             else
