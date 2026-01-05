@@ -6,7 +6,7 @@ namespace SolarEngine
 {
     public partial class Analytics : MonoBehaviour
     {
-        public static readonly string  sdk_version = "1.3.2";
+        public static readonly string  sdk_version = "1.3.3";
         public static readonly string  SolorEngine = $"[SolarEngineSDK_Unity {sdk_version} :]";
         private static readonly string SEConstant_CHECK_ID = "_first_event_check_id";
         private static readonly string SEConstant_EVENT_TYPE = "_event_type";

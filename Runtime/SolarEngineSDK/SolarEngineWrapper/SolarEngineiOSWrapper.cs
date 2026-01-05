@@ -766,7 +766,6 @@ namespace SolarEngine
 #elif UNITY_STANDALONE_OSX
         [DllImport("SEUnityBridgeMacOSBundle")]
 #endif
-
         private static extern void __iOSSESDKupdateConversionValueCoarseValue(int fineValue, String coarseValue,
             SEiOSStringCallback callback);
 

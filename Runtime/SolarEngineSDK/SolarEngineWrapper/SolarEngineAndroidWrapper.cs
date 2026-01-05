@@ -51,7 +51,7 @@ namespace SolarEngine
         {
             initCallBack(config);
             SolarEngineAndroidSDK.CallStatic("initialize", Context, appKey, userId, initSeDict(config),
-                Analytics.Instance.attCompletedCallback_private != null ? new OnAttributionReceivedData() : null,
+                Analytics.Instance.attributionCallback_private != null ? new OnAttributionReceivedData() : null,
                 Analytics.Instance.initCompletedCallback_private != null ? new OnUnityInitCompletedCallback() : null);
         }
 
@@ -60,7 +60,7 @@ namespace SolarEngine
             initCallBack(config);
             SolarEngineAndroidSDK.CallStatic("initialize", Context, appKey, userId, initSeDict(config),
                 initRcDict(rcConfig),
-                Analytics.Instance.attCompletedCallback_private != null ? new OnAttributionReceivedData() : null,
+                Analytics.Instance.attributionCallback_private != null ? new OnAttributionReceivedData() : null,
                 Analytics.Instance.initCompletedCallback_private != null ? new OnUnityInitCompletedCallback() : null);
         }
 
