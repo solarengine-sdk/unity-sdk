@@ -8,3 +8,7 @@
 - Fix the bug where Android attribution cannot be recalled
 
 
+## 1.3.4 - 2026-03-05
+- Support for parameters previously unsupported on the Android side
+
+

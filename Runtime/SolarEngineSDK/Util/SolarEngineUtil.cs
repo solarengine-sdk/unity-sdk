@@ -67,6 +67,19 @@ namespace SolarEngine
             seDict.Add("isKidsAppEnabled", config.isKidsAppEnabled);
             seDict.Add("enableIPV6", config.enableIPV6);
             seDict.Add("authorizationTimeout", config.authorizationTimeout);
+            
+            //新增
+            seDict.Add("supportMultiProcess", config.supportMultiProcess);
+            seDict.Add("withDisableOAIDRetry", config.withDisableOAIDRetry);
+            seDict.Add("withDisableGAIDRetry", config.withDisableGAIDRetry);
+            seDict.Add("isOAIDEnabled", config.isOAIDEnabled);
+            seDict.Add("isImeiEnabled", config.isImeiEnabled);
+            seDict.Add("isAndroidIDEnabled",config.isAndroidIDEnabled);
+            
+            
+            
+            
+            
             if (config.customDomain.enable)
             {
                 Dictionary<string, object> customDomainDict = new Dictionary<string, object>();
@@ -881,6 +894,40 @@ namespace SolarEngine
         // 设置初始化完成回调, 可选
         public Analytics.SESDKInitCompletedCallback initCompletedCallback { get; set; }
         private bool _deferredDeeplinkEnabled;
+
+        //默认false
+        public bool supportMultiProcess;
+        public bool withDisableOAIDRetry;
+        public bool withDisableGAIDRetry;
+        
+        
+       // 默认true
+       public bool isOAIDEnabled
+       {
+           get => _isOAIDEnabled;
+           set => _isOAIDEnabled = value;
+       }
+        
+        private static bool _isOAIDEnabled = true;
+
+        public bool isImeiEnabled
+        {
+            get => _isImeiEnabled;
+            set => _isImeiEnabled = value;
+        }
+
+        private static bool _isImeiEnabled = true;
+
+        public bool isAndroidIDEnabled
+        {
+            get => _isAndroidIDEnabled;
+            set => _isAndroidIDEnabled = value;
+            
+        }
+
+
+        private static bool _isAndroidIDEnabled = true;
+
     }
 
 
