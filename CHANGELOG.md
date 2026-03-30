@@ -12,3 +12,6 @@
 - Support for parameters previously unsupported on the Android side
 
 
+## 1.3.5 - 2026-03-30
+Compatible with HarmonyOS version 1.7.0
+

@@ -439,17 +439,17 @@ namespace SolarEngine.Build
             // File.WriteAllText(path, jsonContent);
 
             insertDependency(coreToInsert, targetPath);
-            if (SolarEngineSettings.isUseOpenHarmony)
-            {
-                insertDependency(remoteConfigToInsert, targetPath);
-
-                PostProcessBuild_RemoteConfig(targetPath);
-            }
+            // if (SolarEngineSettings.isUseOpenHarmony)
+            // {
+            //     insertDependency(remoteConfigToInsert, targetPath);
+            //
+            //     PostProcessBuild_RemoteConfig(targetPath);
+            // }
         }
 
 
         private static string PackageName = "@solarengine/core";
-        private static string _harVersion = "1.3.0"; // 仅版本号，不带 
+        private static string _harVersion = "1.7.0"; // 仅版本号，不带 
         
         
         private static string HarVersion = string.IsNullOrEmpty(SolarEngineSettings.OpenHarmonyVersion)
@@ -459,10 +459,10 @@ namespace SolarEngine.Build
         private static string coreToInsert = $"\"{PackageName}\":\"^{HarVersion}\",\n";
 
 
-        private static string RemoteConfigPackageName = "@solarengine/remoteconfig";
+       // private static string RemoteConfigPackageName = "@solarengine/remoteconfig";
         //private static string RemoteConfigVersion = "1.1.0"; // 仅版本号，不带 ^
 
-        private static string remoteConfigToInsert = $"\"{RemoteConfigPackageName}\":\"^{HarVersion}\",\n";
+        // private static string remoteConfigToInsert = $"\"{RemoteConfigPackageName}\":\"^{HarVersion}\",\n";
 
         public static void insertDependency(string toInsert, string targetPath)
         {
@@ -518,7 +518,6 @@ namespace SolarEngine.Build
     ""arkOptions"": {
       ""runtimeOnly"": {
         ""packages"": [
-          ""@solarengine/remoteconfig"",
           ""@solarengine/core""
         ]
       }

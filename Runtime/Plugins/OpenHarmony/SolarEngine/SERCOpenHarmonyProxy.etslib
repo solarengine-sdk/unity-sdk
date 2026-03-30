@@ -4,7 +4,7 @@ import {
     jsonItem, numberItem,
     RemoteConfigManager,
     safeBoxingConfigItem, stringItem
-} from '@solarengine/remoteconfig';
+} from '@solarengine/core';
 import {SEOpenHarmonyProxy, _log, _SolarEngineLog} from './SEOpenHarmonyProxy';
 
 
