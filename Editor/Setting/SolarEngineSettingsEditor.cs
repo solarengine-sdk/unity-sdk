@@ -396,10 +396,10 @@ namespace SolarEngine
 
         private bool androidRemoteConfigValue()
         {
-            if (androidRemoteConfig.boolValue)
+           // if (androidRemoteConfig.boolValue)
                 return PluginsEdtior.showAndroid();
 
-            return PluginsEdtior.disableAndroid();
+            //return PluginsEdtior.disableAndroid();
         }
 
         private bool miniGameRemoteConfigValue()

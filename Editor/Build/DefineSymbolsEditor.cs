@@ -13,21 +13,21 @@ namespace SolarEngine.Build
         public static void add_DISABLE_REMOTECONFIG(BuildTargetGroup target, bool isminigame)
         {
 
-            string str = PlayerSettings.GetScriptingDefineSymbolsForGroup(target);
-            string newvalue = isminigame ? SE_MINI_DIS_RC : SE_DIS_RC;
+            // string str = PlayerSettings.GetScriptingDefineSymbolsForGroup(target);
+            // string newvalue = isminigame ? SE_MINI_DIS_RC : SE_DIS_RC;
 
-            if (str.Contains(SOLORENGINE_DISABLE_REMOTECONFIG))
-            {
-                str = str.Replace(SOLORENGINE_DISABLE_REMOTECONFIG, newvalue);
+            // if (str.Contains(SOLORENGINE_DISABLE_REMOTECONFIG))
+            // {
+            //     str = str.Replace(SOLORENGINE_DISABLE_REMOTECONFIG, newvalue);
 
-            }
-            else if (!str.Contains(newvalue))
-            {
-                str += $";{newvalue}";
-            }
+            // }
+            // else if (!str.Contains(newvalue))
+            // {
+            //     str += $";{newvalue}";
+            // }
 
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(target,
-                str);
+            // PlayerSettings.SetScriptingDefineSymbolsForGroup(target,
+            //     str);
 
 
 
@@ -37,23 +37,23 @@ namespace SolarEngine.Build
 
         public static void delete_DISABLE_REMOTECONFIG(BuildTargetGroup target, bool isMiniGame)
         {
-            string str = PlayerSettings.GetScriptingDefineSymbolsForGroup(target);
+            // string str = PlayerSettings.GetScriptingDefineSymbolsForGroup(target);
 
-            string define = isMiniGame ? SE_MINI_DIS_RC : SE_DIS_RC;
-            if (str.Contains(SOLORENGINE_DISABLE_REMOTECONFIG))
-            {
-                str = str.Replace(SOLORENGINE_DISABLE_REMOTECONFIG, "");
+            // string define = isMiniGame ? SE_MINI_DIS_RC : SE_DIS_RC;
+            // if (str.Contains(SOLORENGINE_DISABLE_REMOTECONFIG))
+            // {
+            //     str = str.Replace(SOLORENGINE_DISABLE_REMOTECONFIG, "");
 
-            }
+            // }
 
-            if (str.Contains(define))
-            {
-                str = str.Replace(define, "");
+            // if (str.Contains(define))
+            // {
+            //     str = str.Replace(define, "");
 
-            }
+            // }
 
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(target,
-                str);
+            // PlayerSettings.SetScriptingDefineSymbolsForGroup(target,
+            //     str);
         }
 
 

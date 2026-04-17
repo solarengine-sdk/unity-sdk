@@ -177,20 +177,22 @@ namespace SolarEngine
             
             if (!installed)
             {
-                if (!SolarEngineSettings.isUseiOS)
-                    ios = PluginsEdtior.disableiOS();
-                else
-                {
+                // if (!SolarEngineSettings.isUseiOS)
+                //     ios = PluginsEdtior.disableiOS();
+                // else
+                // {
                     ios = PluginsEdtior.showiOS();
-                }
+               // }
 
-                if (!SolarEngineSettings.isUseAndroid)
-                    android = PluginsEdtior.disableAndroid();
-                else
-                {
+                // if (!SolarEngineSettings.isUseAndroid)
+                //     android = PluginsEdtior.disableAndroid();
+                // else
+                // {
                     android = PluginsEdtior.showAndroid();
-                }
+               // }
 
+                PluginsEdtior.removeRC();
+                
                 if (!SolarEngineSettings.isUseMiniGame)
                     miniGame = PluginsEdtior.disableMiniGame();
                 else

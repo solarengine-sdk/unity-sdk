@@ -13,5 +13,9 @@
 
 
 ## 1.3.5 - 2026-03-30
-Compatible with HarmonyOS version 1.7.0
+- Compatible with HarmonyOS version 1.7.0
+
+## 1.3.6 - 2026-04-17
+- Function optimization, compatible with iOS 1.3.1.0 and Android 1.3.1.2 versions
+
 

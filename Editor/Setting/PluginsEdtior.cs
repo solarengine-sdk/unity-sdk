@@ -17,7 +17,6 @@ public class PluginsEdtior : MonoBehaviour
 
    private const string PluginsSolarEnginePath = "Assets/Plugins/SolarEngine/";
    private const string RemoteConfigsCSPath = "Assets/SolarEngineSDK/RemoteConfigWrapper";
-   private const string RemoteConfigXmlPath = SolarEngineNet+"SolarEnginePlugins/RemoteConfigSDK";
    
    private const string SolarEngineNet = "Assets/SolarEngineNet/";
    
@@ -25,11 +24,6 @@ public class PluginsEdtior : MonoBehaviour
    private const string ANDROID_SDK = SolarEngineNet + "Android";
 
    private const string ANDROID_OAID_PATH = SolarEngineNet + "SolarEnginePlugins/Oaid";
-   
-   
-   private const string REMOTECONFIG_PATH = SolarEngineNet + "SolarEnginePlugins/RemoteConfigSDK/";
-   private const string ANDROID_REMOTECONFIG_PATH = REMOTECONFIG_PATH + "Android";
-   private const string IOS_REMOTECONFIG_PATH = REMOTECONFIG_PATH + "iOS" ;
    
    
    
@@ -48,11 +42,9 @@ public class PluginsEdtior : MonoBehaviour
   private const string  RemoteConfigsPathiOSCS = "Assets/SolarEngineSDK/RemoteConfigWrapper/SESDKRemoteConfigiOSWrapper.cs";
    private const string RemoteConfigsPathiOSMM = PluginsSolarEnginePath+"iOS/wrappers/SESDKRemoteConfigUnityBridge.mm";
    private const string RemoteConfigsPathiOSH =  PluginsSolarEnginePath+"iOS/wrappers/SESDKRemoteConfigUnityBridge.h";
-   private const string RemoteConfigsPathiOSXml = RemoteConfigXmlPath+"/iOS";
    //androidpath
     private const string RemoteConfigsPathAndroidCS = "Assets/SolarEngineSDK/RemoteConfigWrapper/SESDKRemoteConfigAndroidWrapper.cs";
    private const string ConfigsPathAndroidJar = PluginsSolarEnginePath+"Android/libs/se_remote_config_unity_bridge.jar";
-   private const string RemoteConfigsPathAndroidXml = RemoteConfigXmlPath+"/Android";
 
 
 
@@ -155,8 +147,7 @@ public class PluginsEdtior : MonoBehaviour
        return  
         HideFile(RemoteConfigsPathiOSCS)&&
        HideFile(RemoteConfigsPathiOSMM)&&
-       HideFile(RemoteConfigsPathiOSH)&&
-       HidePath(RemoteConfigsPathiOSXml);
+       HideFile(RemoteConfigsPathiOSH);
    }
    public static bool showiOS ()
    {
@@ -164,8 +155,28 @@ public class PluginsEdtior : MonoBehaviour
       return
        ShowFile(RemoteConfigsPathiOSCS)&&
        ShowFile(RemoteConfigsPathiOSMM)&&
-       ShowFile(RemoteConfigsPathiOSH)&&
-       ShowPath(RemoteConfigsPathiOSXml);
+       ShowFile(RemoteConfigsPathiOSH);
+   }
+
+   public static void removeRC()
+   {
+       string legacyRemoteConfigPath = System.IO.Path.Combine(
+           "Assets",
+           "SolarEngineNet",
+           "SolarEnginePlugins",
+           "RemoteConfigSDK");
+
+       if (System.IO.Directory.Exists(legacyRemoteConfigPath))
+       {
+           Debug.Log($"{SolorEngine}Removing legacy RemoteConfigSDK directory...");
+           System.IO.Directory.Delete(legacyRemoteConfigPath, true);
+       }
+
+       string legacyRemoteConfigMetaPath = legacyRemoteConfigPath + ".meta";
+       if (System.IO.File.Exists(legacyRemoteConfigMetaPath))
+       {
+           System.IO.File.Delete(legacyRemoteConfigMetaPath);
+       }
    }
 
    public static void disableMacOS()
@@ -180,23 +191,20 @@ public class PluginsEdtior : MonoBehaviour
      
    }
    
-  // [MenuItem(DisableAndroid, false, 0)]
+  //[MenuItem(DisableAndroid, false, 0)]
    public static bool disableAndroid ()
    { 
        DefineSymbolsEditor.add_DISABLE_REMOTECONFIG(BuildTargetGroup.Android,false);
        return HideFile(ConfigsPathAndroidJar) &&
-              HidePath(RemoteConfigsPathAndroidXml)
-              && HideFile(RemoteConfigsPathAndroidCS);
+              HideFile(RemoteConfigsPathAndroidCS);
 
    }
    public static bool showAndroid ()
    {
        DefineSymbolsEditor.delete_DISABLE_REMOTECONFIG(BuildTargetGroup.Android,false);
 
-
        return
            ShowFile(ConfigsPathAndroidJar) &&
-           ShowPath(RemoteConfigsPathAndroidXml) &&
            ShowFile(RemoteConfigsPathAndroidCS);
    }
 

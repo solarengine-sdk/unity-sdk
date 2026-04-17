@@ -24,9 +24,6 @@ public class XmlModifier
     private const string DEPENDDANCIDES = "Editor/Dependencies.xml";
     private const string IOS_SDK_XML_FILE_PATH = SolarEngineNet + "iOS/" + DEPENDDANCIDES;
     private const string ANDROID_SDK_XML_FILE_PATH = SolarEngineNet + "Android/" + DEPENDDANCIDES;
-    private const string REMOTECONFIG_PATH = SolarEngineNet + "SolarEnginePlugins/RemoteConfigSDK/";
-    private const string ANDROID_REMOTECONFIG_PATH = REMOTECONFIG_PATH + "Android/" + DEPENDDANCIDES;
-    private const string IOS_REMOTECONFIG_PATH = REMOTECONFIG_PATH + "iOS/" + DEPENDDANCIDES;
     private const string ANDROID_OAID_PATH = SolarEngineNet + "SolarEnginePlugins/Oaid/" + DEPENDDANCIDES;
     private const string IOS_ODMINFO_PATH= "Assets/SolarEngineNet/SolarEnginePlugins/ODMInfo/" + DEPENDDANCIDES;
     
@@ -52,16 +49,10 @@ public class XmlModifier
 
     private const string ANDROID_PACKAGE_OVERSEA_SPEC = "com.reyun.solar.engine.oversea:solar-engine-core:";
 
-    //
-    private const string ANDROID_REMOTECONFIGE_OVERSEA_SPEC = "com.reyun.solar.engine.oversea:solar-remote-config:";
-
     // CN
     private const string IOS_POD_CN_NAME = "SolarEngineSDK";
 
     private static string ANDROID_PACKAGE_CN_SPEC = "com.reyun.solar.engine.china:solar-engine-core:";
-    private static string ANDROID_REMOTECONFIGE_CN_SPEC = "com.reyun.solar.engine.china:solar-remote-config:";
-
-    private const string IOS_REMOTECONFIGE_SPEC = "SESDKRemoteConfig";
     private const string IOS_ODMInfo_SPEC = "SESDKODMInfo";
     private const string IOS_GoogleUtilities_SPEC = "GoogleUtilities";
     private const string IOS_nanopb_SPEC = "nanopb";
@@ -182,34 +173,6 @@ public class XmlModifier
         return nameSetSuccess && versionSetSuccess;
     }
 
-    private static bool iOSRC(StrongType strongType = StrongType.CN)
-    {
-        bool isModified = false;
-
-        if (!SolarEngineSettings.isUseiOS&&strongType != StrongType.Default)
-            return true;
-        else
-        {
-            XDocument docRemote = LoadXmlDocument(IOS_REMOTECONFIG_PATH);
-
-            if (docRemote!= null)
-            {
-                if (strongType == StrongType.Default)
-                {
-                    isModified = ModifyIOSNodes(docRemote, IOS_POD_Default,strongType);
-                }
-                else
-                {
-                    isModified = ModifyIOSNodes(docRemote, IOS_REMOTECONFIGE_SPEC);
-                }
-
-                SaveXmlDocument(docRemote, IOS_REMOTECONFIG_PATH);
-            }
-        }
-
-        return isModified;
-    }
-
     private static bool ModifyIOSNodes(XDocument doc,StrongType type = StrongType.Oversea)
     {
         try
@@ -290,47 +253,6 @@ public class XmlModifier
                 }
 
                 SaveXmlDocument(docRemote, IOS_ODMINFO_PATH);
-            }
-        }
-
-        return isModified;
-    }
-
-    private static bool AndroidRC(StrongType strongType)
-    {
-        bool isModified = false;
-
-        if (!SolarEngineSettings.isUseAndroid&&strongType != StrongType.Default)
-            return true;
-        else
-        {
-            XDocument docRemote = LoadXmlDocument(ANDROID_REMOTECONFIG_PATH);
-
-            if (docRemote!= null)
-            {
-                XElement dependenciesElement = docRemote.Descendants("dependencies").FirstOrDefault();
-                if (dependenciesElement!= null)
-                {
-                    string version = string.IsNullOrEmpty(SolarEngineSettings.AndroidVersion)
-                       ? ANDROID_PACKAGE_Default_VERSION
-                        : SolarEngineSettings.AndroidVersion;
-
-                    dependenciesElement.RemoveAll();
-                    switch (strongType)
-                    {
-                        case StrongType.Oversea:
-                            isModified = ModifyAndroidNodeWithAndroidPackages(dependenciesElement, ANDROID_REMOTECONFIGE_OVERSEA_SPEC + version);
-                            break;
-                        case StrongType.CN:
-                            isModified = ModifyAndroidNodeWithAndroidPackages(dependenciesElement, ANDROID_REMOTECONFIGE_CN_SPEC + version);
-                            break;
-                        case StrongType.Default:
-                            isModified = true;
-                            break;
-                    }
-                }
-
-                SaveXmlDocument(docRemote, ANDROID_REMOTECONFIG_PATH);
             }
         }
 
@@ -425,9 +347,9 @@ public class XmlModifier
     public static void defaultXml()
     {
         sdkSetting(StrongType.Default);
-        AndroidRC(StrongType.Default);
+        // AndroidRC(StrongType.Default);
         AndroidOaid(StrongType.Default);
-        iOSRC(StrongType.Default);
+       // iOSRC(StrongType.Default);
         iOSODMINFO(StrongType.Default);
     }
 
@@ -440,7 +362,7 @@ public class XmlModifier
     {
         try
         {
-            if (sdkSetting(StrongType.CN) && AndroidRC(StrongType.CN) && AndroidOaid() && iOSRC())
+            if (sdkSetting(StrongType.CN) && AndroidOaid())
             {
                 Debug.Log($"{SolorEngine}set SDK to CN");
                 return true;
@@ -459,13 +381,14 @@ public class XmlModifier
 
     public static bool iOSDefault()
     {
-      return  iOSSetting(StrongType.Default)&&
-        iOSRC(StrongType.Default);
+      return  iOSSetting(StrongType.Default);
+    //   &&
+    //     iOSRC(StrongType.Default);
     }
     public  static bool AndroidDefault( )
     {
         return androidSetting(StrongType.Default) &&
-               AndroidRC(StrongType.Default) &&
+               // AndroidRC(StrongType.Default) &&
                AndroidOaid(StrongType.Default);
 
 
@@ -480,7 +403,7 @@ public class XmlModifier
         try
         {
           
-            if (sdkSetting(StrongType.Oversea) && AndroidRC(StrongType.Oversea) && AndroidOaid() && iOSRC()&& iOSODMINFO())
+            if (sdkSetting(StrongType.Oversea) && AndroidOaid() && iOSODMINFO())
             {
                 Debug.Log($"{SolorEngine}set SDK to Oversea");
                 return true;

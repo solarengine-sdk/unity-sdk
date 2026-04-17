@@ -10,7 +10,7 @@
 
 #import <Foundation/Foundation.h>
 #import <SolarEngineSDK/SolarEngineSDK.h>
-#import <SESDKRemoteConfig/SESDKRemoteConfig.h>
+#import <SolarEngineSDK/SERemoteConfigManager.h>
 
 typedef void (*FetchRemoteConfigCallback)(const char * result);
 
@@ -46,7 +46,7 @@ extern "C" {
             }
         }
         
-        [[SESDKRemoteConfig sharedInstance] setDefaultConfig:defaultConfig];
+        [[SERemoteConfigManager sharedInstance] setDefaultConfig:defaultConfig];
         
     }
 
@@ -66,7 +66,7 @@ extern "C" {
             }
         }
 
-        [[SESDKRemoteConfig sharedInstance] setRemoteConfigEventProperties:dict];
+        [[SERemoteConfigManager sharedInstance] setRemoteConfigEventProperties:dict];
     }
 
     void __iOSSESDKSetRemoteConfigUserProperties(const char *properties) {
@@ -85,12 +85,12 @@ extern "C" {
             }
         }
 
-        [[SESDKRemoteConfig sharedInstance] setRemoteConfigUserProperties:dict];
+        [[SERemoteConfigManager sharedInstance] setRemoteConfigUserProperties:dict];
     }
 
     char * __iOSSESDKFastFetchRemoteConfig(const char *key) {
         NSString *keyString = [NSString stringWithUTF8String:key];
-        id data = [[SESDKRemoteConfig sharedInstance] fastFetchRemoteConfig:keyString];
+        id data = [[SERemoteConfigManager sharedInstance] fastFetchRemoteConfig:keyString];
         NSString *msg = [NSString stringWithFormat:@"%@", data];
         
         if ([data isKindOfClass:[NSDictionary class]] || [data isKindOfClass:[NSArray class]]) {
@@ -105,7 +105,7 @@ extern "C" {
     
     void __iOSSESDKAsyncFetchRemoteConfig(const char * key , FetchRemoteConfigCallback callback) {
         NSString *keyString = [NSString stringWithUTF8String:key];
-        [[SESDKRemoteConfig sharedInstance] asyncFetchRemoteConfig:keyString completionHandler:^(id  _Nonnull data) {
+        [[SERemoteConfigManager sharedInstance] asyncFetchRemoteConfig:keyString completionHandler:^(id  _Nonnull data) {
             NSString *msg = [NSString stringWithFormat:@"%@", data];
             if ([data isKindOfClass:[NSDictionary class]] || [data isKindOfClass:[NSArray class]]) {
                 NSData *d = [NSJSONSerialization dataWithJSONObject:data options:0 error:nil];
@@ -118,7 +118,7 @@ extern "C" {
     }
 
     char * __iOSSESDKFastFetchAllRemoteConfig() {
-        NSDictionary *dict = [[SESDKRemoteConfig sharedInstance] fastFetchRemoteConfig];
+        NSDictionary *dict = [[SERemoteConfigManager sharedInstance] fastFetchRemoteConfig];
         NSData *data = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
         if (data == nil) {
             return NULL;
@@ -129,7 +129,7 @@ extern "C" {
 
     void __iOSSESDKAsyncFetchAllRemoteConfig(FetchRemoteConfigCallback callback) {
                 
-        [[SESDKRemoteConfig sharedInstance] asyncFetchRemoteConfigWithCompletionHandler:^(NSDictionary * _Nonnull dict) {
+        [[SERemoteConfigManager sharedInstance] asyncFetchRemoteConfigWithCompletionHandler:^(NSDictionary * _Nonnull dict) {
             
             if (dict) {
                 NSData *data = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
